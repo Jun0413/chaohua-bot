@@ -1,0 +1,28 @@
+{
+    "urls": {
+        "login": "https://passport.weibo.cn/signin/login?entry=mweibo",
+        "success-login": "https://m.weibo.cn",
+        "task-center": "https://huati.weibo.cn/super/taskcenter",
+        "idol-chaohua": "https://huati.weibo.cn/super/pickoppo?page_id=1008087ab6781e332a2ef4df88e620de9413ca",
+        "all-chaohua": "https://m.weibo.cn/p/tabbar?containerid=100803_-_followsuper"
+    },
+    "xpaths": {
+        "check-in-names": "//div[@class=\"m-text-box\"]/h3[@class=\"m-text-cut\"]",
+        "check-in-buttons": "//div[@class=\"m-diy-btn m-box-col m-box-center m-box-center-a\"][@callback=\"callback()\"]",
+        "donate-button": "//*[@id=\"app\"]/div/div[2]/div[2]/span[2]"
+    },
+    "css-ids": {
+        "username": "loginName",
+        "password": "loginPassword",
+        "login-button": "loginAction"
+    },
+    "login": {
+        "username": 'YOUR_PHONE_NUMBER_OR_EMAIL',
+        "password": 'YOUR_PASSWORD'
+    },
+    "timeouts": {
+        "long": 30000,
+        "mid": 10000,
+        "short": 5000
+    }
+}
