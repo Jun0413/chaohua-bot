@@ -1,26 +1,27 @@
-const {Builder, By, Key, until, ExpectedConditions } = require('selenium-webdriver');
+const {Builder, By, until } = require('selenium-webdriver');
 const config = require('./config.json');
 
 /**
- * Check in all my chaohuas recursively
+ * Check in one chaohua
  * 
  * This should get executed before voting.
  * If check-in buttons with callback cannot be found,
  * check-in is regarded as complete.
  * 
  * @param driver WebDriver
- * @returns true if complete else false
+ * @returns false if complete else true
  */
 async function checkIn(driver) {
     await driver.get(config.urls['all-chaohua']);
-    let checkInButtons = await driver
-                                 .wait(until.elementsLocated(By.xpath(config.xpaths['check-in-buttons'])), config.timeouts.short)
+    let checkInButton = await driver
+                                 .wait(until.elementLocated(By.xpath(config.xpaths['check-in-buttons'])), config.timeouts.short)
                                  .catch(_ => { console.log('ALL CHECKED IN.'); });
-    // let checkInNames = await driver.findElements(By.xpath(config.xpaths['check-in-names']));    
-    if (checkInButtons) { // only the chaohuas that are not checked in
+    // let checkInNames = await driver.findElements(By.xpath(config.xpaths['check-in-names']));
+    if (checkInButton) { // only the chaohuas that are not checked in
         console.log('CHECK IN.');
-        checkInButtons[0].click().catch(err => console.log(err));
-        await driver.wait(until.urlContains('index?containerid='), config.timeouts.mid); // TODO: find a softer way
+        // scroll down to element, not clickable if hidden
+        await driver.executeScript("arguments[0].scrollIntoView(true);", checkInButton);
+        await checkInButton.click().catch(err => console.log(err));
         return true;
     }
     return false;
@@ -47,7 +48,8 @@ async function checkIn(driver) {
     await driver.wait(until.urlContains(config.urls['success-login']), config.timeouts.long);
 
     // 2. Check in all chaohuas
-    while (await checkIn(driver)) { };
+    // TODO: instead of interval, are there any softer ways?
+    while (await checkIn(driver)) { await delay(config.timeouts.short); }
 
     // 3. Donate points
     await driver.get(config.urls['idol-chaohua']);
